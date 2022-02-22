@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-node-port # name of service
+spec:
+  type: NodePort # type of service
+  ports:
+    - port: 3050 # port that other containers can access the service
+      targetPort: 3000 # port for communincating with designated container
+      nodePort: 31515 # port reserved in the host (accessing from outside the cluster)
+  selector:
+    component: web # connect to object that has this label

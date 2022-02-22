@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      containers:
+        - name: server
+          image: stephengrider/multi-server
+          ports:
+            - containerPort: 5000
+          env: # env for each container
+            - name: REDIS_HOST # who shall I connect through
+              value: redis-cluster-ip-service # the cluster ip prepered earlier
+            - name: REDIS_PORT # on what port should I connect 
+              value: '6379' # as specified in the appropriate cluster ip file
+            - name: PGUSER # username field
+              value: postgres # username entry
+            - name: PGHOST # how to reach postgres (defind in postgres cluster ip file)
+              value: postgres-cluster-ip-service
+            - name: PGPORT
+              value: '5432'
+            - name: PGDATABASE # what is the database?
+              value: postgres # the default one in postgres
+            - name: POSTGRES_PASSWORD # this is the secret entry entered earlier
+              valueFrom: # get the value from
+                secretKeyRef: # the cli entry
+                  name: pgpassword # the name we gave the secret
+                  key: POSTGRES_PASSWORD # a key to look for inside the secret
+      resources:
+

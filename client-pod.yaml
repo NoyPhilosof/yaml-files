@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client-pod # name of pod
+  labels:
+    component: web # label attached for reference inside the pod
+spec:
+  containers:
+    - name: client # name of container
+      image: stephengrider/multi-worker # image to build the container from
+      ports:
+        - containerPort: 3000 # ports exposed inside the pod

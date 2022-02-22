@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cluster-ip-service # name to be called from objects looking to connect
+spec:
+  type: ClusterIP
+  selector:
+    componemt: redis
+  ports:
+    - port: 6379
+      targetPort: 6379
